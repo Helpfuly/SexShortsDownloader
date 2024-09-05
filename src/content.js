@@ -70,10 +70,11 @@ function createCustomContextMenu(videoElement) {
 }
 
 function modifyVideoElement() {
-    const videoElement = getElementByXpath('//div/div/div[1]/video');
+    let videoElement = getElementByXpath('//div/div/div[1]/video');
     const divElement = getElementByXpath('//div/div/div[1]/video/../../div[4]');
 
     if (videoElement && divElement) {
+        if (videoElement.getAttribute('src') == "") videoElement = getElementByXpath('//div/div/div[1]/picture/img');
         divElement.addEventListener('contextmenu', function (event) {
             event.preventDefault();
             createCustomContextMenu(videoElement);
