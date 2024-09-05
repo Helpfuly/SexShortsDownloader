@@ -1,0 +1,15 @@
+{
+    "manifest_version": 3,
+    "name": "SexShortsDownloader",
+    "version": "1.0",
+    "description": "Adds download button",
+    "permissions": [
+      "activeTab"
+    ],
+    "content_scripts": [
+      {
+        "matches": ["*://*.sex.com/*"],
+        "js": ["content.js"]
+      }
+    ]
+  }
