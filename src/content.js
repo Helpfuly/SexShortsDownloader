@@ -7,7 +7,7 @@ function getFileNameFromSrc(src) {
     return urlParts[urlParts.length - 1];
 }
 
-function createCustomContextMenu(videoElement) {
+function createCustomContextMenu(selectedElement, picture) {
     let existingMenu = document.getElementById('custom-context-menu');
     if (existingMenu) {
         existingMenu.remove();
@@ -27,7 +27,7 @@ function createCustomContextMenu(videoElement) {
     downloadButton.style.cursor = 'pointer';
 
     downloadButton.addEventListener('click', function () {
-        const videoSrc = videoElement.src;
+        const videoSrc = picture ? selectedElement.srcset.split(' ')[0].replace('=300', "=1200") : selectedElement.src;
 
         if (videoSrc) {
             const fileName = getFileNameFromSrc(videoSrc);
@@ -74,10 +74,14 @@ function modifyVideoElement() {
     const divElement = getElementByXpath('//div/div/div[1]/video/../../div[4]');
 
     if (videoElement && divElement) {
-        if (videoElement.getAttribute('src') == "") videoElement = getElementByXpath('//div/div/div[1]/picture/img');
+        let picture = false
+        if (videoElement.getAttribute('src') == "") {
+            videoElement = getElementByXpath('//div/div/div[1]/picture/source');
+            picture = true
+        }
         divElement.addEventListener('contextmenu', function (event) {
             event.preventDefault();
-            createCustomContextMenu(videoElement);
+            createCustomContextMenu(videoElement, picture);
         });
     }
 }
