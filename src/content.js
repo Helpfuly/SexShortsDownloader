@@ -70,13 +70,13 @@ function createCustomContextMenu(selectedElement, picture) {
 }
 
 function modifyVideoElement() {
-    let videoElement = getElementByXpath('//div/div/div[1]/video');
-    const divElement = getElementByXpath('//div/div/div[1]/video/../../div[4]');
+    let videoElement = getElementByXpath(`//div[contains(@class, 'swiper-slide-active')]/div/div[1]/video`);
+    const divElement = getElementByXpath(`//div[contains(@class, 'swiper-slide-active')]/div/div[1]/video/../../div[4]`);
 
     if (videoElement && divElement) {
         let picture = false
         if (videoElement.getAttribute('src') == "") {
-            videoElement = getElementByXpath('//div/div/div[1]/picture/source');
+            videoElement = getElementByXpath(`//div[contains(@class, 'swiper-slide-active')]/div/div[1]/div/picture/source`);
             picture = true
         }
         divElement.addEventListener('contextmenu', function (event) {
