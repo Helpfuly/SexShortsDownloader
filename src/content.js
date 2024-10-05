@@ -71,7 +71,7 @@ function createCustomContextMenu(selectedElement, picture) {
 
 function modifyVideoElement() {
     let videoElement = getElementByXpath(`//div[contains(@class, 'swiper-slide-active')]/div/div[1]/video`);
-    const divElement = getElementByXpath(`//div[contains(@class, 'swiper-slide-active')]/div/div[1]/video/../../div[4]`);
+    const divElement = getElementByXpath(`//div[contains(@class, 'swiper-slide-active')]/div/div[1]/video/../../div[4]`) || getElementByXpath(`//div[contains(@class, 'swiper-slide-active')]/div/div[1]/video/../../div[3]`);
 
     if (videoElement && divElement) {
         let picture = false
