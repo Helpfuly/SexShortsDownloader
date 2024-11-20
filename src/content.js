@@ -71,6 +71,80 @@ function showNotification(message, type = 'info') {
     }, 3000);
 }
 
+function addRainbowGlowEffect(selectedElement) {
+    // Создаем anchor контейнер
+    const anchorContainer = document.createElement('div');
+    anchorContainer.style.cssText = `
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        overflow: visible;
+    `;
+    selectedElement.parentElement.style.position = 'relative';
+    selectedElement.parentElement.insertBefore(anchorContainer, selectedElement);
+    
+    // Создаем элемент свечения
+    const glowElement = document.createElement('div');
+    glowElement.style.cssText = `
+        position: absolute;
+        pointer-events: none;
+        top: -30px;
+        left: -30px;
+        right: -30px;
+        bottom: -30px;
+        z-index: -1;
+    `;
+    
+    // Создаем и добавляем стили для анимации
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes gradientRotate {
+            0% {
+                background-position: 0% 50%;
+            }
+            100% {
+                background-position: 200% 50%;
+            }
+        }
+        @keyframes glowFade {
+            0% { opacity: 0; }
+            15% { opacity: 1; }
+            85% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+    `;
+    document.head.appendChild(style);
+
+    glowElement.style.cssText += `
+        background: linear-gradient(90deg,
+            rgba(255,0,0,0.3),
+            rgba(255,165,0,0.3),
+            rgba(255,255,0,0.3),
+            rgba(0,255,0,0.3),
+            rgba(0,158,255,0.3),
+            rgba(238,130,238,0.3),
+            rgba(255,0,0,0.3)
+        );
+        background-size: 200% 100%;
+        border-radius: 12px;
+        filter: blur(35px);
+        animation: 
+            gradientRotate 4s linear infinite,
+            glowFade 3s ease-in-out forwards;
+    `;
+
+    anchorContainer.appendChild(glowElement);
+
+    // Удаляем элементы после завершения анимации
+    setTimeout(() => {
+        anchorContainer.remove();
+        style.remove();
+    }, 3000);
+}
+
 function createCustomContextMenu(selectedElement, picture) {
     try {
         let existingMenu = document.getElementById('custom-context-menu');
@@ -139,6 +213,11 @@ function createCustomContextMenu(selectedElement, picture) {
         downloadButton.addEventListener('click', function () {
             if (videoSrc) {
                 showNotification('Starting download...', 'info');
+                const targetElement = picture ? 
+                    selectedElement.parentElement.parentElement : // For picture elements
+                    selectedElement; // For video elements
+                addRainbowGlowEffect(targetElement);
+
                 fetch(videoSrc, {
                     headers: {
                         'Referer': window.location.href
